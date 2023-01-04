@@ -9,8 +9,8 @@ const decodeId = (bufferArray) => {
 };
 
 const SUCCESS = {
-  WORKSPACE_CREATED: 'New workspace has been created',
-  WORKSPACE_UPDATED: 'Workspace has been updated',
+  WORKSPACE_CREATED: (name) => `Workspace ${name} has been created`,
+  WORKSPACE_UPDATED: (name) => `Workspace ${name} has been updated`,
   WORKSPACE_DELETED: 'Workspace has been deleted',
 }
 const ERRORS = {
@@ -20,7 +20,8 @@ const ERRORS = {
 };
 
 router.get('/workspaces', (req, res) => {
-  connection.query('select * from workspace', (err, workspaces) => {
+  connection.query('select * from workspace', 
+  (err, workspaces) => {
     if (err) {
       console.log(err);
       res.status(500).json({
@@ -49,7 +50,8 @@ router.get('/workspaces', (req, res) => {
 
 router.get('/workspace/:id', (req, res) => {
   const {id} = req.params;
-  connection.query(`select * from workspace where id = unhex("${id}")`, (err, [workspace]) => {
+  connection.query(`select * from workspace where id = unhex("${id}")`, 
+  (err, [workspace]) => {
     if (err) {
       console.log(err);
       res.status(500).json({
@@ -67,8 +69,8 @@ router.get('/workspace/:id', (req, res) => {
 
     res.status(200).json({
       data: {
-        id: decodeId(workspace.id),
         ...workspace,
+        id: decodeId(workspace.id),
         owner_id: decodeId(workspace.owner_id),
       },
     });
@@ -88,12 +90,8 @@ router.post('/workspace', (req, res) => {
   const id = uuid().replaceAll('-', '');
 
   connection.query(
-    `insert into workspace(
-        id,
-        name,
-        description,
-        owner_id
-      ) values (
+    `insert into workspace(id,name, description, owner_id) 
+    values (
         unhex("${id}"),
         "${name}",
         "${description}",
@@ -109,7 +107,7 @@ router.post('/workspace', (req, res) => {
       }
 
       res.status(201).json({
-        message: SUCCESS.WORKSPACE_CREATED,
+        message: SUCCESS.WORKSPACE_CREATED(name),
       });
     }
   );
@@ -149,7 +147,7 @@ router.put('/workspace/:id', (req, res) => {
       `update workspace set 
         name = "${name}", 
         description = "${description}",
-        owner_id = unhex("${owner_id}"),
+        owner_id = unhex("${owner_id}")
         where id = unhex("${id}")`,
       (err) => {
         if (err) {
@@ -161,7 +159,7 @@ router.put('/workspace/:id', (req, res) => {
         }
 
         res.status(200).json({
-          message: SUCCESS.WORKSPACE_UPDATED,
+          message: SUCCESS.WORKSPACE_UPDATED(name),
         });
       }
     );
@@ -181,7 +179,7 @@ router.delete('/workspace/:id', (req, res) => {
     }
 
     res.status(200).json({
-      message: SUCCESS.WORKSPACE_DELETED,
+      message: SUCCESS.WORKSPACE_DELETED
     });
   });
 });
