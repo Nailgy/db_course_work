@@ -6,4 +6,4 @@
 
 * [Ілля НАЛИВАЙКО](https://t.me/Nailggy)
 
-**[Посилання на проект](https://just-hoshinon.github.io/db_course_work/)**
+**[Посилання на проект](https://nailgy.github.io/db_course_work/)**
