@@ -4,7 +4,7 @@
 
 ## Запуск сервера на 5000 порті
 
-![console screen on server start](./server-start.png)
+![console screen on server start](./server_start.png)
 
 ## Додавання сутності (Create)
 
