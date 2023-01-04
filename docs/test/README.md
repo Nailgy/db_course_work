@@ -45,4 +45,4 @@
 
 ### Результат
 
-![result of deleting](./delete_result.png)
+![result of deleting](./delete_res.png)
